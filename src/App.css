@@ -1,0 +1,329 @@
+/* ── Design tokens ────────────────────────────────────────────────────────── */
+:root {
+  --green-900: #1a2e1a;
+  --green-800: #1f3d22;
+  --green-700: #2d5a31;
+  --green-600: #3a7a3f;
+  --green-400: #5aaa62;
+  --green-200: #b7deba;
+  --green-100: #e6f4e7;
+  --slate-800: #2c3a3f;
+  --slate-600: #4a5c63;
+  --slate-400: #7d9099;
+  --slate-200: #cddde2;
+  --slate-100: #eef4f6;
+  --cream: #faf7f2;
+  --cream-dark: #f0ead8;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.12);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.16);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+/* ── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--slate-100);
+  color: var(--slate-800);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+#root {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* ── App wrapper ──────────────────────────────────────────────────────────── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  max-height: 820px;
+  min-height: 500px;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--green-200);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--green-800) 0%, var(--green-700) 100%);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.logo-icon {
+  font-size: 1.9rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
+}
+
+.header-text h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+
+.header-text p {
+  font-size: .72rem;
+  opacity: .82;
+  margin-top: .15rem;
+}
+
+/* Live agent badge */
+.live-agent-badge {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.35);
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, .6);
+  animation: pulse 1.5s infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.6); }
+  70%  { box-shadow: 0 0 0 7px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+
+/* ── Live-agent banner ────────────────────────────────────────────────────── */
+.live-agent-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  background: #d1fae5;
+  border-bottom: 1px solid #6ee7b7;
+  padding: .55rem 1.25rem;
+  font-size: .8rem;
+  color: #065f46;
+  flex-shrink: 0;
+}
+
+.disconnect-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid #059669;
+  color: #047857;
+  font-size: .75rem;
+  font-weight: 600;
+  padding: .25rem .65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.disconnect-btn:hover {
+  background: #059669;
+  color: var(--white);
+}
+
+/* ── Chat window ──────────────────────────────────────────────────────────── */
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  background: var(--cream);
+}
+
+.chat-window::-webkit-scrollbar { width: 5px; }
+.chat-window::-webkit-scrollbar-track { background: transparent; }
+.chat-window::-webkit-scrollbar-thumb { background: var(--green-200); border-radius: 999px; }
+
+/* ── Message rows ─────────────────────────────────────────────────────────── */
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  gap: .5rem;
+  max-width: 88%;
+}
+
+.bot-row  { align-self: flex-start; }
+.user-row { align-self: flex-end; flex-direction: row-reverse; }
+
+.avatar {
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bot-avatar  { background: var(--green-100); box-shadow: var(--shadow-sm); }
+.user-avatar { background: var(--cream-dark); box-shadow: var(--shadow-sm); }
+
+/* ── Bubbles ──────────────────────────────────────────────────────────────── */
+.bubble {
+  padding: .65rem .9rem;
+  border-radius: var(--radius-md);
+  line-height: 1.55;
+  font-size: .88rem;
+  word-break: break-word;
+  box-shadow: var(--shadow-sm);
+}
+
+.bot-bubble {
+  background: var(--white);
+  border: 1px solid var(--green-200);
+  border-bottom-left-radius: var(--radius-sm);
+  color: var(--slate-800);
+}
+
+.user-bubble {
+  background: var(--green-700);
+  color: var(--white);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+/* Markdown inside bubbles */
+.bubble p  { margin-bottom: .35rem; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble ul, .bubble ol { padding-left: 1.3rem; margin: .25rem 0; }
+.bubble li { margin-bottom: .2rem; }
+.bubble strong { font-weight: 700; }
+.bubble a {
+  color: var(--green-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.user-bubble a { color: var(--green-200); }
+
+.timestamp {
+  display: block;
+  font-size: .67rem;
+  opacity: .55;
+  margin-top: .35rem;
+  text-align: right;
+}
+
+/* ── Quick action buttons ─────────────────────────────────────────────────── */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  padding: .6rem 1.1rem;
+  background: var(--cream-dark);
+  border-top: 1px solid var(--green-200);
+  flex-shrink: 0;
+}
+
+.quick-actions button {
+  flex: 1 1 auto;
+  min-width: 120px;
+  background: var(--white);
+  border: 1.5px solid var(--green-400);
+  color: var(--green-700);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .42rem .6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.quick-actions button:hover {
+  background: var(--green-700);
+  color: var(--white);
+  border-color: var(--green-700);
+}
+
+/* ── Input area ───────────────────────────────────────────────────────────── */
+.input-area {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.1rem;
+  background: var(--white);
+  border-top: 1px solid var(--slate-200);
+  flex-shrink: 0;
+}
+
+.chat-input {
+  flex: 1;
+  border: 1.5px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  padding: .55rem .75rem;
+  font-size: .88rem;
+  font-family: inherit;
+  color: var(--slate-800);
+  background: var(--cream);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.chat-input:focus {
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px rgba(58,122,63,.15);
+}
+.chat-input::placeholder { color: var(--slate-400); }
+
+.send-btn {
+  background: var(--green-700);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: .55rem 1.1rem;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, opacity .15s;
+  white-space: nowrap;
+}
+.send-btn:hover:not(:disabled) { background: var(--green-600); }
+.send-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  body { padding: 0; }
+  .app-wrapper {
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+  }
+  .header-text h1 { font-size: .95rem; }
+  .quick-actions button { min-width: 100px; font-size: .73rem; }
+  .message-row { max-width: 96%; }
+}
