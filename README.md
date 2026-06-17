@@ -53,10 +53,10 @@ Open **http://localhost:5173** in your browser.
 ## Core Use Cases Covered
 
 ### 1. Order Tracking
-Triggered by phrases like "Where is my order?", "Track my package", "order status", "order #111", etc.
+Triggered by phrases like "Where is my order?", "Track my package", "order status", "order #111", or a bare number like `111` typed directly.
 
-- Bot asks for the order number if not provided
-- Accepts numbers with or without `#`
+- Accepts a bare order number typed directly (e.g., `111` or `#222`), with or without `#`
+- Also asks for the order number if a tracking phrase is used without one
 - Returns mock status for orders 111, 222, 333
 - Returns an error message with escalation option for any other number
 
@@ -69,7 +69,7 @@ Triggered by phrases like "I want to return something", "exchange item", "return
 - Mentions exchanges start through the same link
 
 ### 3. Product Recommendations
-Triggered by phrases like "recommend gear", "what should I buy?", "need camping gear", "what jacket should I get?", etc.
+Triggered by phrases like "recommend gear", "what should I buy?", "need camping gear", "what jacket should I get?", "I want to go hiking", "want to hike", "planning to camp", etc.
 
 - Asks about activity type (hiking, camping, backpacking, cold weather, rain, casual)
 - Recommends a product **category** (not a specific product)
@@ -146,8 +146,8 @@ Run through each input manually before submission:
 
 - [ ] `Where is my order?` → bot asks for order number
 - [ ] `Track my package` → bot asks for order number
-- [ ] `111` (after order flow is active) → Shipped status
-- [ ] `Order #222` → Processing status (direct intent detection)
+- [ ] `111` → Shipped status
+- [ ] `Order #222` → Processing status
 - [ ] `333` → Delivered status
 - [ ] `999` → Invalid order, offer retry or agent
 - [ ] `I want to return something` → Returns policy + link

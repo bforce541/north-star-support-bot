@@ -76,8 +76,19 @@ export default function App() {
 
     const { flow, step, activityContext, fallbackCount } = conversationState;
 
-    // Active ORDER flow — waiting for order number
-    if (flow === 'ORDER') {
+    // Detect intent early so active flows can be escaped by a new intent
+    const intent = detectIntent(trimmed);
+    const isReset = /\b(menu|cancel|nevermind|never mind|start over|back|stop|exit)\b/i.test(trimmed);
+
+    // Escape active flow on explicit reset keyword
+    if ((flow === 'ORDER' || flow === 'RECS') && isReset) {
+      resetToMenu("No problem! What else can I help you with today?");
+      return;
+    }
+
+    // Active ORDER flow — stay in it only if intent is ORDER_TRACKING or ambiguous (UNKNOWN)
+    // Any other clear intent (RETURNS, RECOMMENDATIONS, HUMAN_HANDOFF) falls through to routing
+    if (flow === 'ORDER' && (intent === 'UNKNOWN' || intent === 'ORDER_TRACKING')) {
       const result = handleOrderTracking(trimmed);
       setTimeout(() => {
         setMessages((prev) => [...prev, botMsg(result.text)]);
@@ -88,8 +99,8 @@ export default function App() {
       return;
     }
 
-    // Active RECS flow
-    if (flow === 'RECS') {
+    // Active RECS flow — stay in it only if intent is RECOMMENDATIONS or ambiguous (UNKNOWN)
+    if (flow === 'RECS' && (intent === 'UNKNOWN' || intent === 'RECOMMENDATIONS')) {
       const result = handleRecommendationFlow(trimmed, step, activityContext);
       if (!result) return;
       setTimeout(() => {
@@ -101,15 +112,14 @@ export default function App() {
             ...s,
             step: s.step + 1,
             activityContext: result.activity || s.activityContext,
+            fallbackCount: 0,
           }));
         }
       }, 400);
       return;
     }
 
-    // No active flow — detect intent
-    const intent = detectIntent(trimmed);
-
+    // No active flow, or mid-flow escape — route by detected intent
     if (intent === 'HUMAN_HANDOFF') {
       const result = handleHumanHandoff();
       setTimeout(() => {

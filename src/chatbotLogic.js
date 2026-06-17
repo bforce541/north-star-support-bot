@@ -8,13 +8,16 @@ export function detectIntent(message) {
   if (/\b(human|agent|representative|live agent|talk to someone|support person|real person|speak to)\b/.test(m))
     return 'HUMAN_HANDOFF';
 
+  if (/^\s*#?\d{1,6}\s*$/.test(m))
+    return 'ORDER_TRACKING';
+
   if (/\b(track|where.*(is|are|my)|order status|package|shipment|order number|my order|order #?\d+)\b/.test(m) || /\border\s*#?\d+/i.test(m))
     return 'ORDER_TRACKING';
 
   if (/\b(return|exchange|refund|send back|policy|how do returns|unused|packaging)\b/.test(m))
     return 'RETURNS';
 
-  if (/\b(recommend|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking))\b/.test(m))
+  if (/\b(recommend|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking)|go (hiking|camping|backpacking)|want to (hike|camp|backpack)|plan(?:ning)? to (hike|camp|backpack))\b/.test(m))
     return 'RECOMMENDATIONS';
 
   return 'UNKNOWN';
