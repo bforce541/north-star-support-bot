@@ -43,10 +43,6 @@ export default function App() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  function addMessages(...msgs) {
-    setMessages((prev) => [...prev, ...msgs]);
-  }
-
   function resetToMenu(extraMsg) {
     setConversationState(INITIAL_STATE);
     if (extraMsg) {

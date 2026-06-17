@@ -36,7 +36,7 @@ A functional customer support chatbot for **North Star Outdoor**, a simulated e-
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/yoshuaa0/north-star-support-bot.git
+git clone https://github.com/bforce541/north-star-support-bot.git
 cd north-star-support-bot
 
 # 2. Install dependencies
@@ -105,15 +105,19 @@ Triggered by "human", "agent", "representative", "talk to someone", "live agent"
 
 > Recommended length: 2–3 minutes. Narrate each scenario as you type.
 
-### Scenario 1 — Order Tracking (30 sec)
+### Scenario 1 — Order Tracking (45 sec)
 1. Type: `Where is my order?`
 2. Bot asks for order number
 3. Type: `111`
-4. Bot responds: *Shipped — arriving tomorrow*
-5. Type: `Order #222`
-6. Bot responds: *Processing — ships in 24 hours*
-7. Type: `333`
-8. Bot responds: *Delivered. Did everything arrive okay?*
+4. Bot responds: *Shipped — arriving tomorrow* ✅
+5. Type: `Track my package`
+6. Bot asks for order number (demonstrates intent variation)
+7. Type: `Order #222`
+8. Bot responds: *Processing — ships in 24 hours* ✅
+9. Type: `Where is order 333?`
+10. Bot responds: *Delivered. Did everything arrive okay?* ✅
+11. Type: `Track order 999`
+12. Bot responds: invalid order, offers retry or Live Agent ✅
 
 ### Scenario 2 — Returns & Exchanges (20 sec)
 1. Type: `I want to exchange my jacket`
@@ -121,10 +125,10 @@ Triggered by "human", "agent", "representative", "talk to someone", "live agent"
 3. Bot provides returns portal link
 
 ### Scenario 3 — Product Recommendations (30 sec)
-1. Type: `I need camping gear`
-2. Bot asks what kind of outdoor activity
-3. Type: `I'm going backpacking`
-4. Bot recommends: *Lightweight Packs & Compact Sleeping Gear*
+1. Type: `I need some new gear`
+2. Bot asks: *What kind of outdoor activity are you planning?*
+3. Type: `backpacking`
+4. Bot recommends: *Lightweight Packs & Compact Sleeping Gear* ✅
 
 ### Scenario 4 — Human Handoff (20 sec)
 1. Type: `I want to talk to a human`
@@ -153,9 +157,9 @@ Run through each input manually before submission:
 - [ ] `I want to return something` → Returns policy + link
 - [ ] `Can I exchange my jacket?` → Returns policy + link
 - [ ] `Return policy` → Returns policy + link
-- [ ] `Recommend gear` → Activity clarification question
-- [ ] `I'm going backpacking` → Lightweight packs recommendation
-- [ ] `cold weather` → Insulated jackets recommendation
+- [ ] `Recommend gear` → Bot asks clarifying question (activity type)
+- [ ] `backpacking` (in response to activity question) → Lightweight packs recommendation
+- [ ] `cold weather gear` → Bot asks clarifying question, then insulated jackets recommendation
 - [ ] `human` → Live Agent mode activated
 - [ ] `talk to someone` → Live Agent mode activated
 - [ ] `banana compass pizza` → Friendly fallback message

@@ -17,7 +17,7 @@ export function detectIntent(message) {
   if (/\b(return|exchange|refund|send back|policy|how do returns|unused|packaging)\b/.test(m))
     return 'RETURNS';
 
-  if (/\b(recommend|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking)|go (hiking|camping|backpacking)|want to (hike|camp|backpack)|plan(?:ning)? to (hike|camp|backpack))\b/.test(m))
+  if (/\b(recommend|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking)|go (hiking|camping|backpacking)|want to (hike|camp|backpack)|plan(?:ning)? to (hike|camp|backpack)|cold weather|rain gear|waterproof gear|outdoor gear|gear recommendation)\b/.test(m))
     return 'RECOMMENDATIONS';
 
   return 'UNKNOWN';
@@ -40,6 +40,7 @@ export function handleOrderTracking(message) {
     return {
       type: 'ORDER_NOT_FOUND',
       text: `Hmm, I couldn't find an order with number **#${orderNum}**. Please double-check the number on your confirmation email.\n\nWould you like to try a different order number, or connect with a Live Agent?`,
+      followUp: "What else can I help you with today?",
     };
   }
   return {
@@ -111,23 +112,15 @@ export function detectActivity(message) {
 }
 
 export function handleRecommendationFlow(message, step, activityContext) {
+  // step 0: always ask the clarifying question — never skip ahead
   if (step === 0) {
-    const activity = detectActivity(message);
-    if (activity) {
-      const rec = recommendations[activity];
-      return {
-        type: 'RECOMMENDATION_RESULT',
-        text: `${rec.emoji} Based on **${activity}**, I'd recommend:\n\n**${rec.category}**\n\n${rec.detail}`,
-        followUp: "Would you like to explore other gear options, or is there anything else I can help you with?",
-        activity,
-      };
-    }
     return {
       type: 'ASK_ACTIVITY',
       text: "I'd love to help you find the right gear! What kind of outdoor activity are you planning?\n\n• 🥾 Hiking\n• ⛺ Camping\n• 🎒 Backpacking\n• 🧥 Cold weather adventures\n• 🌧️ Rainy / wet conditions\n• 🌿 Casual outdoor use",
     };
   }
 
+  // step 1: user answered the activity question
   if (step === 1) {
     const activity = detectActivity(message);
     if (activity) {
@@ -145,6 +138,7 @@ export function handleRecommendationFlow(message, step, activityContext) {
     };
   }
 
+  // step 2: user answered the conditions question
   if (step === 2) {
     const activity = activityContext || detectActivity(message);
     const rec = recommendations[activity] || recommendations.casual;
