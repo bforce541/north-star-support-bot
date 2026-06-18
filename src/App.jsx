@@ -4,6 +4,7 @@ import {
   detectIntent,
   handleOrderTracking,
   handleReturns,
+  handleShippingInfo,
   handleRecommendationFlow,
   handleHumanHandoff,
   handleFallback,
@@ -121,7 +122,7 @@ export default function App() {
       setTimeout(() => {
         setMessages((prev) => [...prev, botMsg(result.text)]);
         setIsLiveAgent(true);
-        setConversationState({ ...INITIAL_STATE, flow: 'HUMAN' });
+        setConversationState(INITIAL_STATE);
       }, 400);
       return;
     }
@@ -141,6 +142,15 @@ export default function App() {
 
     if (intent === 'RETURNS') {
       const result = handleReturns();
+      setTimeout(() => {
+        setMessages((prev) => [...prev, botMsg(result.text)]);
+        resetToMenu(result.followUp || null);
+      }, 400);
+      return;
+    }
+
+    if (intent === 'SHIPPING_INFO') {
+      const result = handleShippingInfo();
       setTimeout(() => {
         setMessages((prev) => [...prev, botMsg(result.text)]);
         resetToMenu(result.followUp || null);
@@ -171,7 +181,7 @@ export default function App() {
         setTimeout(() => {
           setMessages((prev) => [...prev, botMsg(handoff.text)]);
           setIsLiveAgent(true);
-          setConversationState({ ...INITIAL_STATE, flow: 'HUMAN' });
+          setConversationState(INITIAL_STATE);
         }, 600);
       } else {
         setConversationState((s) => ({ ...s, fallbackCount: newCount }));
@@ -184,6 +194,7 @@ export default function App() {
     const labels = {
       order: 'Track my order',
       returns: 'I want to make a return',
+      shipping: 'What are your shipping options?',
       recs: 'I need product recommendations',
       agent: 'I want to talk to a live agent',
     };
@@ -248,6 +259,7 @@ export default function App() {
         <div className="quick-actions" role="group" aria-label="Quick actions">
           <button onClick={() => handleQuickAction('order')}>📦 Track Order</button>
           <button onClick={() => handleQuickAction('returns')}>🔄 Returns &amp; Exchanges</button>
+          <button onClick={() => handleQuickAction('shipping')}>🚚 Shipping Info</button>
           <button onClick={() => handleQuickAction('recs')}>🛒 Product Recs</button>
           <button onClick={() => handleQuickAction('agent')}>👤 Live Agent</button>
         </div>

@@ -17,7 +17,10 @@ export function detectIntent(message) {
   if (/\b(return|exchange|refund|send back|policy|how do returns|unused|packaging)\b/.test(m))
     return 'RETURNS';
 
-  if (/\b(recommend|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking)|go (hiking|camping|backpacking)|want to (hike|camp|backpack)|plan(?:ning)? to (hike|camp|backpack)|cold weather|rain gear|waterproof gear|outdoor gear|gear recommendation)\b/.test(m))
+  if (/\b(shipping|delivery time|delivery option|shipping speed)\b/.test(m))
+    return 'SHIPPING_INFO';
+
+  if (/\b(recommend[a-z]*|suggest|what should i buy|help me pick|need gear|camping gear|hiking gear|what jacket|best|looking for|what.*buy|gear for|going (hiking|camping|backpacking)|go (hiking|camping|backpacking)|want to (hike|camp|backpack)|plan(?:ning)? to (hike|camp|backpack)|cold weather|rain gear|waterproof gear|outdoor gear|gear recommendation)\b/.test(m))
     return 'RECOMMENDATIONS';
 
   return 'UNKNOWN';
@@ -151,6 +154,16 @@ export function handleRecommendationFlow(message, step, activityContext) {
   }
 
   return null;
+}
+
+// ── Shipping info ─────────────────────────────────────────────────────────────
+
+export function handleShippingInfo() {
+  return {
+    type: 'SHIPPING_INFO',
+    text: `Here are our **Shipping Options**:\n\n• 📦 **Standard Shipping** — 3–5 business days\n• ⚡ **Expedited Shipping** — 1–2 business days\n\nShipping rates may vary by destination. Select your preferred speed at checkout.`,
+    followUp: "Is there anything else I can help you with?",
+  };
 }
 
 // ── Human handoff ─────────────────────────────────────────────────────────────
